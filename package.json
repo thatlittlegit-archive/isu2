@@ -1,0 +1,23 @@
+{
+  "name": "isu2",
+  "version": "0.0.0",
+  "description": "An improved version of my ISU project",
+  "main": "",
+  "scripts": {
+    "build": "babel *.js --ignore out.js --presets env | browserify - | babel --presets env > out.js",
+    "build:prod": "babel *.js --ignore out.js --presets env | browserify - | babel --presets env | uglifyjs >out.js"
+  },
+  "author": "thatlittlegit",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "uglify-js": "^3.1.3",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0"
+  },
+  "dependencies": {
+    "dom-loaded": "^1.0.1",
+    "moonjs": "^0.11.0"
+  }
+}
