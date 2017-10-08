@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>ISUv2</title>
+		<meta charset="utf-8" />
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+		<link href="node_modules/bulma/css/bulma.css" rel="stylesheet" />
+		<link href="index.css" rel="stylesheet" />
+	</head>
+	<body id="app">
+		<nav class="navbar is-success" role="navigation">
+			<div class="navbar-brand">
+				<h1 class="navbar-item" style="font-size:175%">ISU<sup>v2</sup></h1>
+			</div>
+			<div class="navbar-start" m-if="main">
+				<a href="#" class="navbar-item" m-on:click="runcode">Run</a>
+			</div>
+			<div class="navbar-end" m-if="main">
+				<a href="#" class="navbar-item is-active">Coding Area</a>
+				<a href="#" class="navbar-item" m-on:click="toggle">Help</a>
+			</div>
+			<div class="navbar-end" m-if="help">
+				<a href="#" class="navbar-item" m-on:click="toggle">Coding Area</a>
+				<a href="#" class="navbar-item is-active">Help</a>
+			</div>
+		</nav>
+		<div m-if="main" class="main">
+			<textarea m-if="main" placeholder="Start coding!" rows="10"></textarea>
+			<div class="output">Welcome to ISUv2!</div>
+		</div>
+		<div m-if="help" class="helppage">
+			<section class="hero is-primary is-bold">
+				<div class="hero-body">
+					<div class="container">
+						<div class="columns is-vcentered">
+							<div class="column">
+								<h1 class="title">Help</h1>
+								<h2 class="subtitle">'cuz sometimes, everyone needs a little help.</h2>
+							</div>
+							<div class="column is-narrow">
+								<i class="fa fa-question-circle fa-5x"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="hero-foot">
+					<div class="container">
+						<div class="tabs is-boxed">
+							<ul>
+								<li m-selectedtab="0">
+									<a>
+										<span class="nodisplay">!</span><i class="fa fa-home 2x"></i><span class="nodisplay">!</span>
+									</a>
+								</li>
+								<li m-selectedtab="1">
+									<a class="code">PRINT</a>
+								</li>
+								<li m-selectedtab="2">
+									<a class="code">MATH</a>
+								</li>
+								<li m-selectedtab="3">
+									<a class="code">READ</a>
+								</li>
+								<li m-selectedtab="4">
+									<a>
+										Variables
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section class="section">
+				<div m-if="helptopic === 0" class="container content">
+					<h2 class="title">Welcome!</h2>
+					<h3 class="subtitle">Sometimes, everyone needs a little help.</h3>
+					<hr />
+					<h4 class="subtitle">History</h4>
+					<p>
+						This is a remake of my <a href="https://wapidstyle.bitbucket.io/isu">old project</a> that I made for a school assignment. The original code <a href="https://wapidstyle.bitbucket.io/isu/index.js">found here</a> is a mess. For example, let's see line 20.
+					</p>
+					<pre>q[j] = vars[l[1]];</pre>
+					<p>
+						It would be fun to see what a syntax highlighter did with that. Oh, wait. We have <a href="https://carbon.now.sh">Carbon</a>.
+					</p>
+					<img src="old-code.png" alt="Screenshot of old code" />
+					<p>
+						Huh. Turns out Carbon highlights a lot. A lot of editors wouldn't highlight much. Maybe the 1. However, I'm fairly certain that anyone reading this gets the point of the code &mdash; the code is <em>obviously</em> meant to fill in the variable from <code>q</code>'s indice <code>j</code>, which is <em>obviously</em> the index in the <code>for</code> loop, which is an indice in the toString'd <code>s</code>, which <em>obviously</em> stands for string, split by the command (which <code>c</code> helpfully stands for), to get the appropriate position in the input to parse variables according to <code>l</code>, which is every letter in the current indice, and get the variable's value from the (actually fairly well named) <code>vars</code> array. <span style="color:#AAA">This took at least 10 minutes to type.</span>
+					</p>
+					<p>
+						So, I decided to rewrite ISU with <a href="https://moonjs.ga">Moon</a> by Kabir Shah and <a href="https://bulma.io">Bulma</a> by Jeremy Thomas. The features are fairly similar between ISU and ISU<sup>v2</sup>, but there are some differences such as <code>MATH</code> not using <code>eval</code> (try using <code>MATH document.body.style.backgroundColor = "blue"</code> in ISU!) and READ working the way I intended it to instead of cheating with <code>prompt</code>.
+					</p>
+				</div>
+			</section>
+		</div>
+		<script src="out.js"></script>
+	</body>
+</html>
