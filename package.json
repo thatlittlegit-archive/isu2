@@ -4,9 +4,9 @@
   "description": "An improved version of my ISU project",
   "main": "",
   "scripts": {
-    "build:watch": "watchify *.js --ignore-watch out.js -o out.js -v --transform [ babelify --presets [ env ] ]",
-    "build": "browserify index.js -o out.js --transform [ babelify --presets [ env ] ]",
-    "build:prod": "browserify index.js -o out.js --transform [ babelify --presets [ env minify ] ]"
+    "build:watch": "rimraf out.js && watchify *.js --ignore-watch out.js -o out.js -v --transform [ babelify --presets [ env ] ]",
+    "build": "rimraf out.js && browserify index.js -o out.js --transform [ babelify --presets [ env ] ]",
+    "build:prod": "rimraf out.js && browserify index.js -o out.js --transform [ babelify --presets [ env minify ] ]"
   },
   "author": "thatlittlegit",
   "license": "MIT",
@@ -18,6 +18,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-minify": "^0.2.0",
     "browserify": "^14.4.0",
+    "rimraf": "^2.6.2",
     "watchify": "^3.9.0"
   },
   "dependencies": {
