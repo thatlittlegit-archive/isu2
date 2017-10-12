@@ -1,3 +1,7 @@
+[m-mask] {
+	display: none;
+}
+
 body#app div.main textarea {
 	resize: none;
 	width: 100%;
