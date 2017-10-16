@@ -7,13 +7,14 @@
 		<link href="node_modules/bulma/css/bulma.css" rel="stylesheet" />
 		<link href="index.css" rel="stylesheet" />
 	</head>
-	<body id="app">
+	<body id="app" m-mask>
 		<nav class="navbar is-success" role="navigation">
 			<div class="navbar-brand">
 				<h1 class="navbar-item" style="font-size:175%">ISU<sup>v2</sup></h1>
 			</div>
 			<div class="navbar-start" m-if="main">
-				<a href="#" class="navbar-item" m-on:click="runcode">Run</a>
+				<a href="#" class="navbar-item" id="run" m-on:click="runcode" m-if="!running">Run</a>
+				<a href="#" class="navbar-item" id="terminate" m-on:click="terminate" m-if="running">Terminate</a>
 			</div>
 			<div class="navbar-end" m-if="main">
 				<a href="#" class="navbar-item is-active">Coding Area</a>
@@ -25,8 +26,8 @@
 			</div>
 		</nav>
 		<div m-if="main" class="main">
-			<textarea m-if="main" placeholder="Start coding!" rows="10"></textarea>
-			<div class="output">Welcome to ISUv2!</div>
+			<textarea m-if="main" placeholder="Start coding!" rows="10" id="code"></textarea>
+			<div class="output" m-html="messages"></div>
 		</div>
 		<div m-if="help" class="helppage">
 			<section class="hero is-primary is-bold">
@@ -91,6 +92,95 @@
 					<p>
 						So, I decided to rewrite ISU with <a href="https://moonjs.ga">Moon</a> by Kabir Shah and <a href="https://bulma.io">Bulma</a> by Jeremy Thomas. The features are fairly similar between ISU and ISU<sup>v2</sup>, but there are some differences such as <code>MATH</code> not using <code>eval</code> (try using <code>MATH document.body.style.backgroundColor = "blue"</code> in ISU!) and READ working the way I intended it to instead of cheating with <code>prompt</code>.
 					</p>
+					<h3 class="subtitle">Purpose</h3>
+					<p>
+						The purpose of this page is to be a bare-bones implementation of, effectively, <a href="http://man7.org/linux/man-pages/man3/puts.3.html"><code>puts(3)</code></a>, a bit of <a href="http://man7.org/linux/man-pages/man1/bc.1p.html"><code>bc(1)</code></a> and <a href="http://man7.org/linux/man-pages/man3/fgets.3.html"><code>fgets(3)</code></a> put into a BASIC-like syntax.
+					</p>
+					<h3 class="subtitle">Guide</h3>
+					<ul>
+						<li>
+							<code>PRINT</code>: Put text into the output area. <br /><strong>Example:</strong><pre>PRINT Hello, World
+=> Hello, World</pre>
+						</li>
+						<li>
+							<code>MATH</code>: Get the value of a mathematic equation. Previously used <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval"><code>eval()</code></a> but now uses <a href="https://www.npmjs.com/package/math-expression-evaluator"><code>math-expression-evaluator</code></a>. <br /><strong>Example:</strong><pre>MATH 2 1+1
+PRINT ?2
+=> 2</pre>			
+						</li>
+						<li>
+							<code>READ</code>: Get value from a textbox with a submit button. Previously used <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt"><code>prompt()</code></a> but now uses a custom system which it was supposed to use before, but couldn't due to time restrictions and bad coding. <br /><strong>Example:</strong><pre>READ 1
+(input Hello!)
+PRINT ?1
+=> Hello!</pre>
+						</li>
+						<li>
+							Variables: Explains how variables work in this system.
+						</li>
+					</ul>
+				</div>
+				<div m-if="helptopic === 1" class="container content">
+					<h2 class="title"><code>PRINT</code> <span class="tag is-success">compatible</span>
+					</h2>
+					<p>
+						Put text onto the output area.
+					</p>
+					<h3 class="subtitle">Usage</h3>
+					<pre>PRINT [text]
+=> [text]</pre>
+					<h3 class="subtitle">Compatibility</h3>
+					<p>
+						No changes.
+					</p>
+				</div>
+				<div m-if="helptopic === 2" class="container content">
+					<h2 class="title"><code>MATH</code> <span class="tag is-danger">not compatible</span></h2>
+					<p>
+						Calculate math and put into a variable.
+					</p>
+					<h3 class="subtitle">Usage</h3>
+					<pre>MATH [variable] [equation]</pre>
+					<h3 class="subtitle">Compatibility</h3>
+					<p>
+						ISU had the ability to execute arbitrary JavaScript via <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval"><code>eval()</code></a>, which was removed in ISU<sup>v2</sup>. The output was also put to the output area instead of a variable.
+					</p>
+				</div>
+				<div m-if="helptopic === 3" class="container content">
+					<h2 class="title"><code>READ</code> <span class="tag is-danger">not compatible</span></h2>
+					<p>
+						Get input from a textbox and put into a variable. No text is shown.
+					</p>
+					<h3 class="subtitle">Usage</h3>
+					<pre>READ 1</pre>
+					<input /><button>Ok</button>
+					<h3 class="subtitle">Compatibility</h3>
+					<p>
+						Due to time constraints, ISU used a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt"><code>prompt()</code></a> dialog to ask for information. Because I am designing this differently, there shan't be a problem and the intended behavior, shown above, should work. ISU also had a text field, which is removed.
+					</p>
+				</div>
+				<div m-if="helptopic === 4" class="container content">
+					<h2 class="title">Variables <span class="tag is-warning">somewhat compatible</span></h2>
+					<p>
+						With variables, you can store a value and tuck it away for later. The value comes from a <code>MATH</code> or <code>READ</code> instruction.
+					</p>
+					<h3 class="subtitle">Usage</h3>
+					<p>
+						Use a question-mark (<code>?</code>) before a number to use a variable. For example:<pre>READ 1
+(input Hi)
+PRINT ?1
+=> Hi</pre>
+					</p>
+					<article class="message is-success">
+						<div class="message-header">
+							New
+						</div>
+						<div class="message-body">
+							In ISU<sup>v2</sup> you can now use multiple-digit variables. <strong>Example:</strong>
+							<pre>READ 1245
+(input Hi)
+PRINT ?1245
+=> Hi</pre>
+						</div>
+					</article>
 				</div>
 			</section>
 		</div>

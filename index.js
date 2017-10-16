@@ -1,5 +1,6 @@
 import Moon from 'moonjs';
 import domLoaded from 'dom-loaded';
+import execute from './exec.js';
 
 window.app = null;
 
@@ -21,7 +22,11 @@ domLoaded.then(() => {
 		data: {
 			main: true,
 			help: false,
-			helptopic: 0
+			helptopic: 0,
+			running: false,
+			execpromise: null,
+			rawMessages: ["Welcome to ISUv2!"],
+			messages: "Welcome to ISUv2!"
 		},
 		methods: {
 			toggle() {
@@ -30,6 +35,27 @@ domLoaded.then(() => {
 				});
 				this.set('main', !this.get('main'));
 				this.set('help', !this.get('help'));
+			},
+			runcode() {
+				this.set('running', true);
+				this.set('execpromise',execute(document.getElementById('code').value)
+					.then(() => {
+						this.set('running', false);
+					}));
+			},
+			terminate() {
+				this.get('execpromise').cancel();
+				this.set('running', false);
+			},
+			addMessage(mesg) {
+				this.set('rawMessages', this.get('rawMessages').concat(mesg));
+				this.set('messages', this.get('rawMessages').join('<br />'));
+				this.build();
+			},
+			clearMessages() {
+				this.set('rawMessages', []);
+				this.set('messages', '');
+				this.build();
 			}
 		}
 	});
